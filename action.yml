@@ -1,6 +1,13 @@
-name: "Your name here"
-description: "Provide a description here"
-author: "Your name or organization here"
+name: "Bump H5P version"
+
+description: "This action bumps the library version of a H5P project."
+
+author: "Sindre Bøyum"
+
+branding:
+  icon: package
+  color: blue
+
 inputs:
   type:
     required: true
