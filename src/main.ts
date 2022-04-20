@@ -1,7 +1,6 @@
 import * as core from "@actions/core";
-import * as github from "@actions/github";
 import { exec } from "@actions/exec";
-import path from "path";
+import * as github from "@actions/github";
 import type { VersionType } from "./types/VersionType";
 import { bumpVersion, isVersionType, readLibrary, writeLibrary } from "./utils";
 
@@ -73,15 +72,20 @@ async function run(): Promise<void> {
     writeLibrary(workingDirectory, library);
 
     // Set which user should commit
-    exec(`git config user.name '${userName}'`);
-    exec(`git config user.email '${userEmail}'`);
+    exec("git", ["config", "user.name", `"${userName}"`]);
+    exec("git", ["config", "user.email", `"${userEmail}"`]);
 
-    exec(`gh pr checkout ${github.context.issue.number}`);
+    // Check out the current branch
+    exec("gh", ["pr", "checkout", github.context.issue.number.toString()]);
 
     // Commit
-    exec(`git add '${path.join(workingDirectory, "library.json")}'`);
-    exec(`git commit -am '${commitMessage.replace(/\$TYPE\$/g, versionType)}'`);
-    exec(`git push`);
+    exec("git", ["add", "-A"]);
+    exec("git", [
+      "commit",
+      "-am",
+      `"${commitMessage.replace(/$TYPE$/g, versionType)}"`,
+    ]);
+    exec("git", ["push"]);
   } catch (error) {
     if (error instanceof Error) {
       core.setFailed(error.message);

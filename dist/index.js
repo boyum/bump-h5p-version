@@ -38,14 +38,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
-const github = __importStar(__nccwpck_require__(5438));
 const exec_1 = __nccwpck_require__(1514);
-const path_1 = __importDefault(__nccwpck_require__(1017));
+const github = __importStar(__nccwpck_require__(5438));
 const utils_1 = __nccwpck_require__(918);
 const options = {
     type: "type",
@@ -88,13 +84,18 @@ function run() {
             // Store the new library file
             (0, utils_1.writeLibrary)(workingDirectory, library);
             // Set which user should commit
-            (0, exec_1.exec)(`git config user.name '${userName}'`);
-            (0, exec_1.exec)(`git config user.email '${userEmail}'`);
-            (0, exec_1.exec)(`gh pr checkout ${github.context.issue.number}`);
+            (0, exec_1.exec)("git", ["config", "user.name", `"${userName}"`]);
+            (0, exec_1.exec)("git", ["config", "user.email", `"${userEmail}"`]);
+            // Check out the current branch
+            (0, exec_1.exec)("gh", ["pr", "checkout", github.context.issue.number.toString()]);
             // Commit
-            (0, exec_1.exec)(`git add '${path_1.default.join(workingDirectory, "library.json")}'`);
-            (0, exec_1.exec)(`git commit -am '${commitMessage.replace(/\$TYPE\$/g, versionType)}'`);
-            (0, exec_1.exec)(`git push`);
+            (0, exec_1.exec)("git", ["add", "-A"]);
+            (0, exec_1.exec)("git", [
+                "commit",
+                "-am",
+                `"${commitMessage.replace(/$TYPE$/g, versionType)}"`,
+            ]);
+            (0, exec_1.exec)("git", ["push"]);
         }
         catch (error) {
             if (error instanceof Error) {
