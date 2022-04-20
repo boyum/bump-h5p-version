@@ -91,7 +91,7 @@ function run() {
             core.info(`Getting branch name with owner: ${owner}, repo: ${repo}, and number: ${number}`);
             const branchName = yield (0, utils_1.getBranchName)(owner, repo, number);
             core.info("Checking out the current branch");
-            yield (0, exec_1.exec)(`git checkout ${branchName}`);
+            yield (0, exec_1.exec)(`git checkout '${branchName}'`);
             core.info("Commiting");
             yield (0, exec_1.exec)("git", ["add", "-A"]);
             yield (0, exec_1.exec)("git", [
