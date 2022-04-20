@@ -1,10 +1,10 @@
 import * as core from "@actions/core";
 import { exec } from "@actions/exec";
-import * as github from "@actions/github";
+// import * as github from "@actions/github";
 import type { VersionType } from "./types/VersionType";
 import {
   bumpVersion,
-  getBranchName,
+  // getBranchName,
   isVersionType,
   readLibrary,
   writeLibrary,
@@ -81,16 +81,16 @@ async function run(): Promise<void> {
     await exec("git", ["config", "user.name", `"${userName}"`]);
     await exec("git", ["config", "user.email", `"${userEmail}"`]);
 
-    const { owner, repo } = github.context.repo;
-    const { number } = github.context.issue;
+    // const { owner, repo } = github.context.repo;
+    // const { number } = github.context.issue;
 
-    core.info(
-      `Getting branch name with owner: ${owner}, repo: ${repo}, and number: ${number}`,
-    );
-    const branchName = await getBranchName(owner, repo, number);
+    // core.info(
+    //   `Getting branch name with owner: ${owner}, repo: ${repo}, and number: ${number}`,
+    // );
+    // const branchName = await getBranchName(owner, repo, number);
 
-    core.info("Checking out the current branch");
-    await exec("git", ["checkout", branchName]);
+    // core.info("Checking out the current branch");
+    // await exec("git", ["checkout", branchName]);
 
     core.info("Commiting");
     await exec("git", ["add", "-A"]);
