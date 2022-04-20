@@ -83,3 +83,20 @@ export function bumpVersion(
 
   return updatedLibrary;
 }
+
+export async function getBranchName(
+  owner: string,
+  repo: string,
+  prNumber: number,
+): Promise<string> {
+  const fetch = (await import("node-fetch")).default;
+  const result = await fetch(
+    `https://api.github.com/repos/${owner}/${repo}/${prNumber}`,
+  );
+  const data = (await result.json()) as {
+    number: number;
+    head: { ref: string };
+  };
+
+  return data.head.ref;
+}

@@ -2,7 +2,13 @@ import { expect, it, describe, beforeEach, afterEach } from "@jest/globals";
 import { copyFile, mkdir, rm } from "fs/promises";
 import type { Library } from "h5p-types";
 import { join } from "path";
-import { bumpVersion, isVersionType, readLibrary, writeLibrary } from "./utils";
+import {
+  bumpVersion,
+  // getBranchName,
+  isVersionType,
+  readLibrary,
+  writeLibrary,
+} from "./utils";
 
 describe(isVersionType.name, () => {
   it("should return true if any of the version types is given", () => {
@@ -161,3 +167,16 @@ describe(bumpVersion.name, () => {
     expect(actualLibrary).toEqual(expectedLibrary);
   });
 });
+
+// describe(getBranchName.name, () => {
+//   it("should get the name of the branch with the given owner/repo/pr", async () => {
+//     const owner = "boyum";
+//     const repo = "bump-h5p-version";
+//     const prNumber = 1;
+
+//     const expectedBranch = "dependabot/github_actions/actions/checkout-3";
+//     const actualBranch = await getBranchName(owner, repo, prNumber);
+
+//     expect(actualBranch).toBe(expectedBranch);
+//   });
+// });

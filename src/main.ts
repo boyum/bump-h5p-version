@@ -2,7 +2,13 @@ import * as core from "@actions/core";
 import { exec } from "@actions/exec";
 import * as github from "@actions/github";
 import type { VersionType } from "./types/VersionType";
-import { bumpVersion, isVersionType, readLibrary, writeLibrary } from "./utils";
+import {
+  bumpVersion,
+  getBranchName,
+  isVersionType,
+  readLibrary,
+  writeLibrary,
+} from "./utils";
 
 const options = {
   type: "type",
@@ -72,20 +78,25 @@ async function run(): Promise<void> {
     writeLibrary(workingDirectory, library);
 
     // Set which user should commit
-    exec("git", ["config", "user.name", `"${userName}"`]);
-    exec("git", ["config", "user.email", `"${userEmail}"`]);
+    await exec("git", ["config", "user.name", `"${userName}"`]);
+    await exec("git", ["config", "user.email", `"${userEmail}"`]);
 
     // Check out the current branch
-    exec("gh", ["pr", "checkout", github.context.issue.number.toString()]);
+    const { owner, repo } = github.context.repo;
+    const { number } = github.context.issue;
+    const branchName = await getBranchName(owner, repo, number);
+    await exec("git", ["checkout", branchName]);
 
-    // Commit
-    exec("git", ["add", "-A"]);
-    exec("git", [
+    // Add and commit
+    await exec("git", ["add", "-A"]);
+    await exec("git", [
       "commit",
       "-am",
       `"${commitMessage.replace(/$TYPE$/g, versionType)}"`,
     ]);
-    exec("git", ["push"]);
+
+    // Push
+    await exec("git", ["push"]);
   } catch (error) {
     if (error instanceof Error) {
       core.setFailed(error.message);
