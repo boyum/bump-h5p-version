@@ -36,7 +36,7 @@ export async function writeLibrary(
   library: Library,
 ): Promise<void> {
   const libraryPath = path.join(directory, "library.json");
-  await fs.promises.writeFile(libraryPath, JSON.stringify(library));
+  await fs.promises.writeFile(libraryPath, JSON.stringify(library, null, 2));
 }
 
 function bumpPatchVersion(library: Library): Library {
