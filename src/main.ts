@@ -97,7 +97,7 @@ async function run(): Promise<void> {
     await exec("git", [
       "commit",
       "-am",
-      `"${commitMessage.replace(/$TYPE$/g, versionType)}"`,
+      `${commitMessage.replace(/\$TYPE\$/g, versionType)}`,
     ]);
 
     core.info("Pushing");
