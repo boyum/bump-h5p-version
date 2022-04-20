@@ -59,7 +59,7 @@ function getOptions(): {
 
 async function run(): Promise<void> {
   try {
-    // Get options
+    core.info("Getting options");
     const {
       versionType,
       userName,
@@ -68,26 +68,26 @@ async function run(): Promise<void> {
       commitMessage,
     } = getOptions();
 
-    // Find library file
+    core.info("Finding library file");
     let library = await readLibrary(workingDirectory);
 
-    // Update the version number (set patch to 0 if minor is bumped, etc)
+    core.info("Updating version number");
     library = bumpVersion(versionType, library);
 
-    // Store the new library file
+    core.info("Storing the updated library file");
     writeLibrary(workingDirectory, library);
 
-    // Set which user should commit
+    core.info("Setting user info");
     await exec("git", ["config", "user.name", `"${userName}"`]);
     await exec("git", ["config", "user.email", `"${userEmail}"`]);
 
-    // Check out the current branch
+    core.info("Checking out the current branch");
     const { owner, repo } = github.context.repo;
     const { number } = github.context.issue;
     const branchName = await getBranchName(owner, repo, number);
     await exec("git", ["checkout", branchName]);
 
-    // Add and commit
+    core.info("Commiting");
     await exec("git", ["add", "-A"]);
     await exec("git", [
       "commit",
@@ -95,7 +95,7 @@ async function run(): Promise<void> {
       `"${commitMessage.replace(/$TYPE$/g, versionType)}"`,
     ]);
 
-    // Push
+    core.info("Pushing");
     await exec("git", ["push"]);
   } catch (error) {
     if (error instanceof Error) {

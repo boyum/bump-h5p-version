@@ -98,5 +98,7 @@ export async function getBranchName(
     head: { ref: string };
   };
 
+  console.info({ data });
+
   return data.head.ref;
 }

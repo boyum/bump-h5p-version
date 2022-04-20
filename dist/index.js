@@ -75,30 +75,30 @@ function getOptions() {
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            // Get options
+            core.info("Getting options");
             const { versionType, userName, userEmail, workingDirectory, commitMessage, } = getOptions();
-            // Find library file
+            core.info("Finding library file");
             let library = yield (0, utils_1.readLibrary)(workingDirectory);
-            // Update the version number (set patch to 0 if minor is bumped, etc)
+            core.info("Updating version number");
             library = (0, utils_1.bumpVersion)(versionType, library);
-            // Store the new library file
+            core.info("Storing the updated library file");
             (0, utils_1.writeLibrary)(workingDirectory, library);
-            // Set which user should commit
+            core.info("Setting user info");
             yield (0, exec_1.exec)("git", ["config", "user.name", `"${userName}"`]);
             yield (0, exec_1.exec)("git", ["config", "user.email", `"${userEmail}"`]);
-            // Check out the current branch
+            core.info("Checking out the current branch");
             const { owner, repo } = github.context.repo;
             const { number } = github.context.issue;
             const branchName = yield (0, utils_1.getBranchName)(owner, repo, number);
             yield (0, exec_1.exec)("git", ["checkout", branchName]);
-            // Add and commit
+            core.info("Commiting");
             yield (0, exec_1.exec)("git", ["add", "-A"]);
             yield (0, exec_1.exec)("git", [
                 "commit",
                 "-am",
                 `"${commitMessage.replace(/$TYPE$/g, versionType)}"`,
             ]);
-            // Push
+            core.info("Pushing");
             yield (0, exec_1.exec)("git", ["push"]);
         }
         catch (error) {
@@ -222,6 +222,7 @@ function getBranchName(owner, repo, prNumber) {
         const fetch = (yield Promise.resolve().then(() => __importStar(__nccwpck_require__(4429)))).default;
         const result = yield fetch(`https://api.github.com/repos/${owner}/${repo}/${prNumber}`);
         const data = (yield result.json());
+        console.info({ data });
         return data.head.ref;
     });
 }
