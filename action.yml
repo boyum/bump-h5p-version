@@ -13,25 +13,10 @@ inputs:
     required: true
     description: The version type to update. Either `major`, `minor`, or `patch`. If `minor` is bumped, the patch version will be set to 0.
 
-  user-name:
-    required: false
-    description: GitHub user name to commit with.
-    default: github-actions[bot]
-
-  user-email:
-    required: false
-    description: GitHub user email to commit with.
-    default: github-actions[bot]@users.noreply.github.com
-
   working-directory:
     required: false
     description: The directory where the library.json file is located, relative to the Git project.
     default: "."
-
-  commit-message:
-    required: false
-    description: "The commit message used when commiting bumped library version. `$TYPE$` will be replaced with the `type` parameter."
-    default: "bump $TYPE$ version"
 
 runs:
   using: "node16"
