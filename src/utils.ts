@@ -10,9 +10,14 @@ export const isVersionType = (str: string): str is VersionType => {
 
 export async function readLibrary(directory: string): Promise<Library> {
   const libraryPath = path.join(directory, "library.json");
-  const libraryString = (await fs.promises.readFile(libraryPath)).toString(
-    "utf-8",
-  );
+  let libraryString: string;
+
+  try {
+    libraryString = (await fs.promises.readFile(libraryPath)).toString("utf-8");
+  } catch (error) {
+    console.error(error);
+    throw new Error(`Could not find library file at '${libraryPath}'.`);
+  }
 
   let library: Library;
 
@@ -20,7 +25,7 @@ export async function readLibrary(directory: string): Promise<Library> {
     library = JSON.parse(libraryString);
   } catch (error) {
     console.error(error);
-    throw new Error(`Could not find library file at '${libraryPath}'.`);
+    throw new Error(`Could not parse library file.`);
   }
 
   return library;
