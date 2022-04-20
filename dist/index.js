@@ -86,10 +86,11 @@ function run() {
             core.info("Setting user info");
             yield (0, exec_1.exec)("git", ["config", "user.name", `"${userName}"`]);
             yield (0, exec_1.exec)("git", ["config", "user.email", `"${userEmail}"`]);
-            core.info("Checking out the current branch");
             const { owner, repo } = github.context.repo;
             const { number } = github.context.issue;
+            core.info(`Getting branch name with owner: ${owner}, repo: ${repo}, and number: ${number}`);
             const branchName = yield (0, utils_1.getBranchName)(owner, repo, number);
+            core.info("Checking out the current branch");
             yield (0, exec_1.exec)("git", ["checkout", branchName]);
             core.info("Commiting");
             yield (0, exec_1.exec)("git", ["add", "-A"]);
@@ -220,7 +221,7 @@ exports.bumpVersion = bumpVersion;
 function getBranchName(owner, repo, prNumber) {
     return __awaiter(this, void 0, void 0, function* () {
         const fetch = (yield Promise.resolve().then(() => __importStar(__nccwpck_require__(4429)))).default;
-        const result = yield fetch(`https://api.github.com/repos/${owner}/${repo}/${prNumber}`);
+        const result = yield fetch(`https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}`);
         const data = (yield result.json());
         console.info({ data });
         return data.head.ref;

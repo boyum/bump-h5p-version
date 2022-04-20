@@ -81,10 +81,15 @@ async function run(): Promise<void> {
     await exec("git", ["config", "user.name", `"${userName}"`]);
     await exec("git", ["config", "user.email", `"${userEmail}"`]);
 
-    core.info("Checking out the current branch");
     const { owner, repo } = github.context.repo;
     const { number } = github.context.issue;
+
+    core.info(
+      `Getting branch name with owner: ${owner}, repo: ${repo}, and number: ${number}`,
+    );
     const branchName = await getBranchName(owner, repo, number);
+
+    core.info("Checking out the current branch");
     await exec("git", ["checkout", branchName]);
 
     core.info("Commiting");

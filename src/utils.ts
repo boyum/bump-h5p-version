@@ -91,7 +91,7 @@ export async function getBranchName(
 ): Promise<string> {
   const fetch = (await import("node-fetch")).default;
   const result = await fetch(
-    `https://api.github.com/repos/${owner}/${repo}/${prNumber}`,
+    `https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}`,
   );
   const data = (await result.json()) as {
     number: number;
