@@ -89,8 +89,10 @@ async function run(): Promise<void> {
     );
     const branchName = await getBranchName(owner, repo, number);
 
+    await exec("git branch -r");
+
     core.info("Checking out the current branch");
-    await exec(`git checkout '${branchName}'`);
+    await exec(`git checkout -b temp 'origin/${branchName}'`);
 
     core.info("Commiting");
     await exec("git", ["add", "-A"]);
@@ -101,7 +103,7 @@ async function run(): Promise<void> {
     ]);
 
     core.info("Pushing");
-    await exec("git", ["push"]);
+    await exec("git", ["push", "origin", `HEAD:${branchName}`]);
   } catch (error) {
     if (error instanceof Error) {
       core.setFailed(error.message);

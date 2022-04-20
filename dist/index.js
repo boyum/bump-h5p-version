@@ -90,8 +90,9 @@ function run() {
             const { number } = github.context.issue;
             core.info(`Getting branch name with owner: ${owner}, repo: ${repo}, and number: ${number}`);
             const branchName = yield (0, utils_1.getBranchName)(owner, repo, number);
+            yield (0, exec_1.exec)("git branch -r");
             core.info("Checking out the current branch");
-            yield (0, exec_1.exec)(`git checkout '${branchName}'`);
+            yield (0, exec_1.exec)(`git checkout -b temp 'origin/${branchName}'`);
             core.info("Commiting");
             yield (0, exec_1.exec)("git", ["add", "-A"]);
             yield (0, exec_1.exec)("git", [
@@ -100,7 +101,7 @@ function run() {
                 `${commitMessage.replace(/\$TYPE\$/g, versionType)}`,
             ]);
             core.info("Pushing");
-            yield (0, exec_1.exec)("git", ["push"]);
+            yield (0, exec_1.exec)("git", ["push", "origin", `HEAD:${branchName}`]);
         }
         catch (error) {
             if (error instanceof Error) {
