@@ -1,4 +1,5 @@
 import * as core from "@actions/core";
+import * as github from "@actions/github";
 import { exec } from "@actions/exec";
 import path from "path";
 import type { VersionType } from "./types/VersionType";
@@ -75,9 +76,12 @@ async function run(): Promise<void> {
     exec(`git config user.name '${userName}'`);
     exec(`git config user.email '${userEmail}'`);
 
+    exec(`gh pr checkout ${github.context.issue.number}`);
+
     // Commit
     exec(`git add '${path.join(workingDirectory, "library.json")}'`);
     exec(`git commit -am '${commitMessage.replace(/\$TYPE\$/g, versionType)}'`);
+    exec(`git push`);
   } catch (error) {
     if (error instanceof Error) {
       core.setFailed(error.message);
