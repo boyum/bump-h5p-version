@@ -89,10 +89,8 @@ async function run(): Promise<void> {
     );
     const branchName = await getBranchName(owner, repo, number);
 
-    await exec("git", ["config", "--get", "remote.origin.url"]);
-
     core.info("Checking out the current branch");
-    await exec("git", ["checkout", branchName]);
+    await exec("git", [`checkout ${branchName}`]);
 
     core.info("Commiting");
     await exec("git", ["add", "-A"]);
