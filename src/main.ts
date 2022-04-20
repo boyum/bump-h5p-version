@@ -1,10 +1,10 @@
 import * as core from "@actions/core";
-import { exec } from "@actions/exec";
-import * as github from "@actions/github";
+// import { exec } from "@actions/exec";
+// import * as github from "@actions/github";
 import type { VersionType } from "./types/VersionType";
 import {
   bumpVersion,
-  getBranchName,
+  // getBranchName,
   isVersionType,
   readLibrary,
   writeLibrary,
@@ -12,18 +12,18 @@ import {
 
 const options = {
   type: "type",
-  userName: "user-name",
-  userEmail: "user-email",
+  // userName: "user-name",
+  // userEmail: "user-email",
   workingDirectory: "working-directory",
-  commitMessage: "commit-message",
+  // commitMessage: "commit-message",
 };
 
 function getOptions(): {
   versionType: VersionType;
-  userName: string;
-  userEmail: string;
+  // userName: string;
+  // userEmail: string;
   workingDirectory: string;
-  commitMessage: string;
+  // commitMessage: string;
 } {
   // Get which version number should be changed
   const versionType: string | undefined = core.getInput(options.type);
@@ -41,19 +41,19 @@ function getOptions(): {
   }
 
   // Get the user
-  const userName: string = core.getInput(options.userName);
-  const userEmail: string = core.getInput(options.userEmail);
+  // const userName: string = core.getInput(options.userName);
+  // const userEmail: string = core.getInput(options.userEmail);
 
   const workingDirectory = core.getInput(options.workingDirectory);
 
-  const commitMessage = core.getInput(options.commitMessage);
+  // const commitMessage = core.getInput(options.commitMessage);
 
   return {
     versionType,
-    userName,
-    userEmail,
+    // userName,
+    // userEmail,
     workingDirectory,
-    commitMessage,
+    // commitMessage,
   };
 }
 
@@ -62,10 +62,10 @@ async function run(): Promise<void> {
     core.info("Getting options");
     const {
       versionType,
-      userName,
-      userEmail,
+      // userName,
+      // userEmail,
       workingDirectory,
-      commitMessage,
+      // commitMessage,
     } = getOptions();
 
     core.info("Finding library file");
@@ -77,33 +77,33 @@ async function run(): Promise<void> {
     core.info("Storing the updated library file");
     writeLibrary(workingDirectory, library);
 
-    core.info("Setting user info");
-    await exec("git", ["config", "user.name", `"${userName}"`]);
-    await exec("git", ["config", "user.email", `"${userEmail}"`]);
+    // core.info("Setting user info");
+    // await exec("git", ["config", "user.name", `"${userName}"`]);
+    // await exec("git", ["config", "user.email", `"${userEmail}"`]);
 
-    const { owner, repo } = github.context.repo;
-    const { number } = github.context.issue;
+    // const { owner, repo } = github.context.repo;
+    // const { number } = github.context.issue;
 
-    core.info(
-      `Getting branch name with owner: ${owner}, repo: ${repo}, and number: ${number}`,
-    );
-    const branchName = await getBranchName(owner, repo, number);
+    // core.info(
+    //   `Getting branch name with owner: ${owner}, repo: ${repo}, and number: ${number}`,
+    // );
+    // const branchName = await getBranchName(owner, repo, number);
 
-    await exec("git branch -r");
+    // await exec("git branch -r");
 
-    core.info("Checking out the current branch");
-    await exec(`git checkout -b temp 'origin/${branchName}'`);
+    // core.info("Checking out the current branch");
+    // await exec(`git checkout -b temp 'origin/${branchName}'`);
 
-    core.info("Commiting");
-    await exec("git", ["add", "-A"]);
-    await exec("git", [
-      "commit",
-      "-am",
-      `${commitMessage.replace(/\$TYPE\$/g, versionType)}`,
-    ]);
+    // core.info("Commiting");
+    // await exec("git", ["add", "-A"]);
+    // await exec("git", [
+    //   "commit",
+    //   "-am",
+    //   `${commitMessage.replace(/\$TYPE\$/g, versionType)}`,
+    // ]);
 
-    core.info("Pushing");
-    await exec("git", ["push", "origin", `HEAD:${branchName}`]);
+    // core.info("Pushing");
+    // await exec("git", ["push", "origin", `HEAD:${branchName}`]);
   } catch (error) {
     if (error instanceof Error) {
       core.setFailed(error.message);
