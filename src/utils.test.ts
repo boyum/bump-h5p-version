@@ -49,14 +49,14 @@ describe(readLibrary.name, () => {
     expect(actualLibrary).toEqual(expectedLibrary);
   });
 
-  // it("should throw an error if the library file wasn't found in the given directory", async () => {
-  //   try {
-  //     await readLibrary("invalid");
-  //     expect(false).toBeTruthy();
-  //   } catch {
-  //     expect(true).toBeTruthy();
-  //   }
-  // });
+  it("should throw an error if the library file wasn't found in the given directory", async () => {
+    try {
+      await readLibrary("invalid");
+      expect(false).toBeTruthy();
+    } catch {
+      expect(true).toBeTruthy();
+    }
+  });
 });
 
 describe(writeLibrary.name, () => {
