@@ -27,7 +27,7 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.9.0",
-    "node-fetch": "^3.2.6"
+    "node-fetch": "^3.2.8"
   },
   "prettier": "prettier-config",
   "devDependencies": {
