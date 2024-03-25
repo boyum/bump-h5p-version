@@ -31,7 +31,7 @@
   },
   "prettier": "prettier-config",
   "devDependencies": {
-    "@tsconfig/strictest": "^2.0.3",
+    "@tsconfig/strictest": "^2.0.4",
     "@types/node": "^20.11.28",
     "@typescript-eslint/parser": "^6.21.0",
     "@vercel/ncc": "^0.36.1",
