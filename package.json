@@ -44,6 +44,6 @@
     "prettier": "3.0.0",
     "prettier-config": "github:boyum/prettier-config",
     "ts-jest": "^29.1.2",
-    "typescript": "^5.4.4"
+    "typescript": "^5.4.5"
   }
 }
