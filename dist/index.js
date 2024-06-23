@@ -102,7 +102,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.bumpVersion = exports.writeLibrary = exports.readLibrary = exports.isVersionType = void 0;
+exports.isVersionType = void 0;
+exports.readLibrary = readLibrary;
+exports.writeLibrary = writeLibrary;
+exports.bumpVersion = bumpVersion;
 const fs_1 = __importDefault(__nccwpck_require__(147));
 const path_1 = __importDefault(__nccwpck_require__(17));
 const isVersionType = (str) => {
@@ -132,14 +135,12 @@ function readLibrary(directory) {
         return library;
     });
 }
-exports.readLibrary = readLibrary;
 function writeLibrary(directory, library) {
     return __awaiter(this, void 0, void 0, function* () {
         const libraryPath = path_1.default.join(directory, "library.json");
         yield fs_1.default.promises.writeFile(libraryPath, JSON.stringify(library, null, 2));
     });
 }
-exports.writeLibrary = writeLibrary;
 function bumpPatchVersion(library) {
     return Object.assign(Object.assign({}, library), { patchVersion: library.patchVersion + 1 });
 }
@@ -164,7 +165,6 @@ function bumpVersion(versionType, library) {
     }
     return updatedLibrary;
 }
-exports.bumpVersion = bumpVersion;
 
 
 /***/ }),
