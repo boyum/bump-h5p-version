@@ -1,7 +1,8 @@
-import { afterEach, beforeEach, describe, expect, it } from "@jest/globals";
-import { copyFile, mkdir, rm } from "fs/promises";
+import { beforeEach, describe, expect, it } from "@jest/globals";
+import { copyFile, mkdtemp } from "node:fs/promises";
 import type { Library } from "h5p-types";
-import { join } from "path";
+import { join } from "node:path";
+import { tmpdir } from "node:os";
 import { bumpVersion, isVersionType, readLibrary, writeLibrary } from "./utils";
 
 describe(isVersionType.name, () => {
@@ -17,22 +18,15 @@ describe(isVersionType.name, () => {
 });
 
 describe(readLibrary.name, () => {
-  const directory = "temp";
+  let directory: string;
 
   beforeEach(async () => {
-    await mkdir(directory);
+    directory = await mkdtemp(join(tmpdir(), `${readLibrary.name}-`));
 
     await copyFile(
       join("demo", "library.json"),
       join(directory, "library.json"),
     );
-  });
-
-  afterEach(async () => {
-    await rm(join(directory), {
-      recursive: true,
-      force: true,
-    });
   });
 
   it("should read and parse the library file in the given directory", async () => {
@@ -60,22 +54,15 @@ describe(readLibrary.name, () => {
 });
 
 describe(writeLibrary.name, () => {
-  const directory = "temp";
+  let directory: string;
 
   beforeEach(async () => {
-    await mkdir(directory);
+    directory = await mkdtemp(join(tmpdir(), `${writeLibrary.name}-`));
 
     await copyFile(
       join("demo", "library.json"),
       join(directory, "library.json"),
     );
-  });
-
-  afterEach(async () => {
-    await rm(join(directory), {
-      recursive: true,
-      force: true,
-    });
   });
 
   it("should write the given library object to library.json", async () => {
