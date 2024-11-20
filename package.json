@@ -2,47 +2,35 @@
   "name": "bump-h5p-version",
   "version": "1.0.0",
   "private": true,
-  "description": "TypeScript template action",
+  "description": "GitHub Action which will bump the version of an H5P library",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
-    "format": "prettier --write '**/*.ts'",
-    "format-check": "prettier --check '**/*.ts'",
-    "lint": "eslint src/**/*.ts --fix",
-    "lint-check": "eslint src/**/*.ts",
+    "lint": "biome check --fix",
+    "lint-check": "biome check",
     "package": "npm run build && ncc build --source-map --license licenses.txt",
     "test": "jest",
-    "all": "npm run format && npm run lint && npm run package && npm test"
+    "all": "npm run lint-check && npm run package && npm test"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/actions/typescript-action.git"
   },
-  "keywords": [
-    "actions",
-    "node",
-    "setup"
-  ],
-  "author": "",
+  "keywords": ["actions", "node", "setup"],
+  "author": "Sindre Bøyum",
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.11.1",
     "node-fetch": "^3.3.2"
   },
-  "prettier": "prettier-config",
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@tsconfig/strictest": "^2.0.5",
     "@types/node": "^20.14.12",
-    "@typescript-eslint/parser": "^6.21.0",
     "@vercel/ncc": "^0.38.3",
-    "eslint": "^8.46.0",
-    "eslint-plugin-github": "^5.0.2",
-    "eslint-plugin-jest": "^28.9.0",
     "h5p-types": "github:boyum/h5p-types",
     "jest": "^29.7.0",
     "js-yaml": "^4.1.0",
-    "prettier": "3.3.3",
-    "prettier-config": "github:boyum/prettier-config",
     "ts-jest": "^29.2.5",
     "typescript": "^5.6.3"
   }

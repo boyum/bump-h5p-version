@@ -1,6 +1,6 @@
 import fs from "fs";
-import type { Library } from "h5p-types";
 import path from "path";
+import type { Library } from "h5p-types";
 import type { VersionType } from "./types/VersionType";
 
 export const isVersionType = (str: string): str is VersionType => {

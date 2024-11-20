@@ -1,8 +1,8 @@
-import { beforeEach, describe, expect, it } from "@jest/globals";
 import { copyFile, mkdtemp } from "node:fs/promises";
-import type { Library } from "h5p-types";
-import { join } from "node:path";
 import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { beforeEach, describe, expect, it } from "@jest/globals";
+import type { Library } from "h5p-types";
 import { bumpVersion, isVersionType, readLibrary, writeLibrary } from "./utils";
 
 describe(isVersionType.name, () => {
