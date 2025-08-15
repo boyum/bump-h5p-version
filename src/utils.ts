@@ -1,14 +1,18 @@
 import fs from "fs";
+import type { H5PLibrary } from "h5p-types";
 import path from "path";
-import type { Library } from "h5p-types";
 import type { VersionType } from "./types/VersionType";
 
 export const isVersionType = (str: string): str is VersionType => {
-  const versionTypes: Array<VersionType> = ["major", "minor", "patch"];
+  const versionTypes = [
+    "major",
+    "minor",
+    "patch",
+  ] as const satisfies ReadonlyArray<VersionType>;
   return versionTypes.includes(str as VersionType);
 };
 
-export async function readLibrary(directory: string): Promise<Library> {
+export async function readLibrary(directory: string): Promise<H5PLibrary> {
   const libraryPath = path.join(directory, "library.json");
   let libraryString: string;
 
@@ -19,7 +23,7 @@ export async function readLibrary(directory: string): Promise<Library> {
     throw new Error(`Could not find library file at '${libraryPath}'.`);
   }
 
-  let library: Library;
+  let library: H5PLibrary;
 
   try {
     library = JSON.parse(libraryString);
@@ -33,20 +37,20 @@ export async function readLibrary(directory: string): Promise<Library> {
 
 export async function writeLibrary(
   directory: string,
-  library: Library,
+  library: H5PLibrary,
 ): Promise<void> {
   const libraryPath = path.join(directory, "library.json");
   await fs.promises.writeFile(libraryPath, JSON.stringify(library, null, 2));
 }
 
-function bumpPatchVersion(library: Library): Library {
+function bumpPatchVersion(library: H5PLibrary): H5PLibrary {
   return {
     ...library,
     patchVersion: library.patchVersion + 1,
   };
 }
 
-function bumpMinorVersion(library: Library): Library {
+function bumpMinorVersion(library: H5PLibrary): H5PLibrary {
   return {
     ...library,
     minorVersion: library.minorVersion + 1,
@@ -54,7 +58,7 @@ function bumpMinorVersion(library: Library): Library {
   };
 }
 
-function bumpMajorVersion(library: Library): Library {
+function bumpMajorVersion(library: H5PLibrary): H5PLibrary {
   return {
     ...library,
     majorVersion: library.majorVersion + 1,
@@ -65,9 +69,9 @@ function bumpMajorVersion(library: Library): Library {
 
 export function bumpVersion(
   versionType: VersionType,
-  library: Library,
-): Library {
-  let updatedLibrary: Library;
+  library: H5PLibrary,
+): H5PLibrary {
+  let updatedLibrary: H5PLibrary;
 
   switch (versionType) {
     case "major":

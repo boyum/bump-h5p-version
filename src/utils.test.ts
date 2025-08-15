@@ -2,7 +2,7 @@ import { copyFile, mkdtemp } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { beforeEach, describe, expect, it } from "@jest/globals";
-import type { Library } from "h5p-types";
+import type { H5PLibrary } from "h5p-types";
 import { bumpVersion, isVersionType, readLibrary, writeLibrary } from "./utils";
 
 describe(isVersionType.name, () => {
@@ -66,7 +66,7 @@ describe(writeLibrary.name, () => {
   });
 
   it("should write the given library object to library.json", async () => {
-    const library: Library = {
+    const library: H5PLibrary = {
       title: "title",
       machineName: "machineName",
       majorVersion: 1,
