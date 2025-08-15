@@ -119,7 +119,11 @@ exports.bumpVersion = bumpVersion;
 const fs_1 = __importDefault(__nccwpck_require__(896));
 const path_1 = __importDefault(__nccwpck_require__(928));
 const isVersionType = (str) => {
-    const versionTypes = ["major", "minor", "patch"];
+    const versionTypes = [
+        "major",
+        "minor",
+        "patch",
+    ];
     return versionTypes.includes(str);
 };
 exports.isVersionType = isVersionType;
